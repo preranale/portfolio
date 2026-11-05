@@ -1,709 +1,328 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prerana Nale — AI Engineer</title>
-<meta name="description" content="AI Engineer & Full-Stack Developer. Building intelligent systems — RAG pipelines, autonomous agents, and self-improving ML. MS Software Engineering, ASU, GPA 4.0.">
+<title>Prerana Nale · AI Engineer</title>
+<meta name="description" content="Prerana Nale, AI and full-stack engineer. RAG pipelines, self-retraining ML and tool-using agents. MS Software Engineering, Arizona State University.">
+<script>
+// Set the theme before first paint so there is no flash.
+(function () {
+  var dark = false;
+  try {
+    var saved = localStorage.getItem('theme');
+    dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  } catch (e) {}
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+*,*::before,*::after{box-sizing:border-box;}
 :root{
-  --bg:#eeebe3;
-  --bg2:#e4e0d7;
-  --ink:#0f0f0e;
-  --ink2:#3d3d3a;
-  --ink3:#8a8a85;
-  --line:rgba(0,0,0,.1);
-  --serif:'Playfair Display',Georgia,serif;
-  --sans:'Geist',system-ui,sans-serif;
-  --mono:'Geist Mono','Courier New',monospace;
+  --bg:#F2F5F7; --grid:#D6E0E7; --ink:#1A2233; --muted:#4F5A6E;
+  --paper:#FFFFFF; --pen:#1F3FBF; --margin:#D98B87; --line:#1A2233;
+  --hl-bg:#FFF1A8; --hl-ink:#1A2233; --soft:#E8EEF2; --rule:#C9D3DB; --tape:rgba(255,236,150,.75);
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+  --hand:'Caveat','Bradley Hand','Segoe Print',cursive;
+}
+html[data-theme="dark"]{
+  --bg:#11151B; --grid:#1C242E; --ink:#E8EDF4; --muted:#A3AEC0;
+  --paper:#1A212B; --pen:#9DB2FF; --margin:#B86B67; --line:#E8EDF4;
+  --hl-bg:#6B5A12; --hl-ink:#FFF6CF; --soft:#222B37; --rule:#33404F; --tape:rgba(120,104,40,.8);
 }
 html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);overflow-x:hidden;cursor:none;}
-
-/* CURSOR */
-.c{position:fixed;width:7px;height:7px;background:var(--ink);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply;transition:width .25s,height .25s;}
-.cr{position:fixed;width:30px;height:30px;border:1px solid rgba(0,0,0,.2);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);}
-.c.ov{width:14px;height:14px;} .cr.ov{width:54px;height:54px;}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:300;height:60px;padding:0 52px;display:flex;justify-content:space-between;align-items:center;background:rgba(238,235,227,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);}
-.nl{font-family:var(--serif);font-size:1.05rem;font-style:italic;text-decoration:none;color:var(--ink);letter-spacing:-.01em;}
-.nr{display:flex;align-items:center;gap:32px;}
-.nr a{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color .2s;}
-.nr a:hover{color:var(--ink);}
-.resume-btn{color:var(--bg)!important;background:var(--ink);padding:9px 20px;display:inline-flex;align-items:center;gap:7px;transition:opacity .2s!important;}
-.resume-btn:hover{opacity:.75;}
-.resume-btn svg{width:11px;height:11px;flex-shrink:0;}
-
-/* ── HERO ── */
-.hero{min-height:100vh;padding:108px 52px 72px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;}
-
-.hero-photo-wrap{
-  position:absolute;right:52px;top:90px;
-  width:min(280px,22vw);
-  opacity:0;animation:fromRight .9s cubic-bezier(.16,1,.3,1) forwards .5s;
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+body{
+  margin:0; background-color:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;
+  color:var(--ink); font-family:var(--serif); font-size:18px; line-height:1.6;
+  transition:background-color .25s ease,color .25s ease;
 }
-.hero-photo-wrap img{width:100%;display:block;filter:grayscale(6%) contrast(1.04) brightness(.97);}
-.hero-photo-caption{
-  font-family:var(--mono);font-size:.52rem;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink3);padding:10px 14px;border-top:1px solid var(--line);
-  background:var(--bg2);text-align:center;
-}
+a{color:var(--pen);}
+a:hover{text-decoration-thickness:2px;}
+:focus-visible{outline:3px solid var(--pen); outline-offset:3px;}
+.skip{position:absolute;left:-9999px;top:8px;background:var(--paper);color:var(--ink);padding:10px 14px;border:2px solid var(--line);z-index:10;}
+.skip:focus{left:8px;}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;}
+.wrap{max-width:1080px;margin:0 auto;padding:0 40px;}
+.mono{font-family:var(--mono);}
+.label{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.link{font-family:var(--mono);font-size:15px;min-height:44px;display:inline-flex;align-items:center;}
 
-.hero-label{
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--ink3);margin-bottom:44px;display:flex;align-items:center;gap:14px;
-  opacity:0;animation:fromBot .7s ease forwards .15s;
-}
-.hero-label::before{content:'';width:28px;height:1px;background:var(--ink3);}
-.sdot{width:5px;height:5px;background:#22c55e;border-radius:50%;animation:blink 2s ease infinite;display:inline-block;margin-left:4px;}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+/* top bar */
+.bar{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between;padding:20px 0;}
+.bar .brand{font-family:var(--mono);font-size:14px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;}
+.bar nav{display:flex;flex-wrap:wrap;gap:4px 22px;align-items:center;}
+.bar nav a{font-family:var(--mono);font-size:14px;color:var(--ink);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;}
+.bar nav a:hover{color:var(--pen);text-decoration:underline;}
+.toggle{font-family:var(--mono);font-size:14px;color:var(--ink);background:var(--paper);border:2px solid var(--line);padding:8px 14px;min-height:44px;cursor:pointer;}
+.toggle:hover{background:var(--soft);}
 
-/* FIXED: no overlap, proper line wrapping */
-.hero-h{
-  font-family:var(--serif);
-  font-size:clamp(4rem,9.5vw,12rem);
-  font-weight:400;letter-spacing:-.04em;line-height:.9;
-  opacity:0;animation:fromBot .9s cubic-bezier(.16,1,.3,1) forwards .3s;
-}
-.hero-h .it{font-style:italic;}
-.hero-h .outline{
-  -webkit-text-stroke:1.5px var(--ink);
-  color:transparent;
-  display:block; /* own line, no collision */
-  margin-top:.08em;
-}
+/* cover */
+.cover{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start;margin:24px 0 56px;}
+.cover-label{flex:1 1 520px;min-width:0;background:var(--paper);border:2px solid var(--line);padding:28px 32px;display:flex;flex-direction:column;gap:10px;}
+.cover-label h1{margin:0;font-size:clamp(40px,7vw,64px);line-height:1.04;font-weight:600;letter-spacing:-.02em;}
+.cover-label .lede{font-size:20px;}
+.cover-side{flex:0 1 300px;display:flex;flex-direction:column;gap:22px;align-items:flex-start;}
+.photo{position:relative;background:var(--paper);padding:10px 10px 14px;border:1px solid var(--rule);transform:rotate(2deg);width:190px;}
+.photo img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--soft);}
+.photo::before{content:"";position:absolute;top:-14px;left:50%;width:84px;height:26px;margin-left:-42px;background:var(--tape);transform:rotate(-4deg);}
+.photo figcaption{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:8px;}
+.hand{font-family:var(--hand);font-weight:700;color:var(--pen);line-height:1.15;}
+.found{font-size:30px;transform:rotate(-2deg);}
+.found a{color:var(--pen);}
 
-.hero-bottom{
-  margin-top:56px;padding-top:28px;border-top:1px solid var(--line);
-  display:flex;justify-content:space-between;align-items:flex-end;gap:32px;
-  opacity:0;animation:fromBot .8s ease forwards .6s;
-}
-.hero-desc{font-size:1.02rem;line-height:1.82;color:var(--ink2);max-width:480px;font-weight:300;}
-.hero-desc strong{color:var(--ink);font-weight:500;}
-.hero-actions{display:flex;gap:10px;flex-shrink:0;align-items:center;}
-.btn{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:12px 22px;text-decoration:none;transition:all .22s;display:inline-flex;align-items:center;gap:7px;}
-.btn svg{width:10px;height:10px;flex-shrink:0;}
-.btn-dark{background:var(--ink);color:var(--bg);}
-.btn-dark:hover{opacity:.75;}
-.btn-bd{border:1px solid rgba(0,0,0,.18);color:var(--ink);}
-.btn-bd:hover{border-color:var(--ink);background:rgba(0,0,0,.04);}
+.cover-actions{display:flex;flex-wrap:wrap;gap:10px 14px;margin-top:10px;}
+.btn{font-family:var(--mono);font-size:14px;font-weight:500;text-decoration:none;min-height:44px;padding:10px 20px;display:inline-flex;align-items:center;border:2px solid var(--line);}
+.btn-fill{background:var(--ink);color:var(--bg);}
+.btn-fill:hover{background:var(--pen);border-color:var(--pen);color:#FFFFFF;}
+.btn-line{background:var(--paper);color:var(--ink);}
+.btn-line:hover{background:var(--soft);}
 
-/* MARQUEE */
-.marquee-bar{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink);overflow:hidden;padding:15px 0;}
-.marquee-track{display:flex;animation:marquee 30s linear infinite;white-space:nowrap;}
-.mi{font-family:var(--mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:0 36px;border-right:1px solid rgba(255,255,255,.06);flex-shrink:0;}
-.mi.hi{color:rgba(255,255,255,.78);}
-@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+/* contents */
+.contents{max-width:640px;background:var(--paper);border:1px solid var(--line);padding:6px 20px;margin-bottom:64px;}
+.contents a{display:flex;justify-content:space-between;gap:16px;padding:10px 0;border-bottom:1px dotted var(--muted);color:var(--ink);text-decoration:none;min-height:44px;}
+.contents a:last-child{border-bottom:0;}
+.contents a:hover span:first-child{text-decoration:underline;}
+.contents .st{font-family:var(--mono);font-size:14px;color:var(--muted);}
 
-/* NUMBERS */
-.numbers{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--line);}
-.num-block{padding:52px 48px;border-right:1px solid var(--line);}
-.num-block:last-child{border-right:none;}
-.num-n{font-family:var(--serif);font-size:clamp(3rem,4.5vw,5.5rem);font-weight:400;font-style:italic;letter-spacing:-.03em;line-height:1;}
-.num-l{font-size:.95rem;font-weight:600;color:var(--ink);margin-top:10px;letter-spacing:-.01em;}
-.num-sub{font-size:.82rem;color:var(--ink3);margin-top:5px;font-weight:300;line-height:1.55;}
+/* entries */
+.entry{display:flex;flex-wrap:wrap;gap:24px 0;border-top:2px solid var(--line);padding:30px 0 44px;}
+.gutter{flex:0 0 120px;font-family:var(--mono);}
+.gutter .num{font-size:40px;font-weight:600;line-height:1.1;}
+.body{flex:1 1 440px;min-width:0;padding-left:28px;border-left:2px solid var(--margin);}
+.body h2{margin:0 0 18px;font-size:clamp(26px,4vw,34px);font-weight:600;letter-spacing:-.01em;line-height:1.15;}
+.field{margin-bottom:14px;}
+.field .label{margin-bottom:2px;}
+.result{background:var(--hl-bg);color:var(--hl-ink);padding:2px 5px;}
+.note{flex:0 0 220px;padding:8px 0 0 28px;font-size:26px;}
+.n1{transform:rotate(-1.5deg);} .n2{transform:rotate(1.5deg);} .n3{transform:rotate(-1deg);} .n4{transform:rotate(1deg);}
+.links{display:flex;flex-wrap:wrap;gap:0 24px;}
+.pending{border:2px dashed var(--muted);padding:14px 18px;background:var(--paper);font-family:var(--mono);font-size:15px;}
+.fig{margin:18px 0 8px;}
+.fig img{display:block;width:100%;height:auto;border:1px solid var(--line);background:var(--paper);}
+.fig figcaption{font-family:var(--mono);font-size:13px;color:var(--muted);margin-top:6px;}
 
-/* SECTIONS */
-.section{padding:100px 52px;border-top:1px solid var(--line);}
-.sec-eyebrow{font-family:var(--mono);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink3);margin-bottom:64px;display:flex;align-items:center;gap:12px;}
-.sec-eyebrow::after{content:'';width:40px;height:1px;background:var(--line);}
+/* lower sections */
+.lower{border-top:2px solid var(--line);padding-top:30px;display:flex;flex-wrap:wrap;gap:40px;}
+.lower h2{margin:0 0 16px;font-size:28px;font-weight:600;}
+.col-a{flex:1 1 520px;min-width:0;} .col-b{flex:1 1 320px;min-width:0;}
+.tablewrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line);}
+table{border-collapse:collapse;width:100%;font-size:16px;}
+th{background:var(--soft);text-align:left;padding:10px 14px;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;}
+td{padding:12px 14px;border-top:1px solid var(--rule);vertical-align:top;}
+.small{font-size:16px;color:var(--muted);margin:12px 0 0;}
+.gear{display:flex;flex-direction:column;gap:10px;font-size:16px;}
+.training{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;margin-top:56px;background:var(--paper);border:1px solid var(--line);padding:24px 28px;}
+.training .txt{flex:1 1 340px;min-width:0;}
+.plates{display:flex;gap:12px;flex-wrap:wrap;}
+.plates figure{margin:0;width:150px;}
+.plates img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border:1px solid var(--line);background:var(--soft);}
+.plates figcaption{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:4px;}
+.return{margin-top:56px;background:var(--paper);border:2px solid var(--line);padding:28px 32px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;justify-content:space-between;}
+.return .big{font-size:26px;font-weight:600;}
+footer{padding:36px 0 56px;font-family:var(--mono);font-size:13px;color:var(--muted);}
 
-/* ABOUT */
-.about-grid{display:grid;grid-template-columns:340px 1fr;gap:100px;}
-.about-sticky{position:sticky;top:80px;}
-.about-heading{
-  font-family:var(--serif);
-  font-size:clamp(3rem,4.5vw,5.5rem);
-  font-weight:400;font-style:italic;
-  letter-spacing:-.04em;line-height:.95;
-  margin-bottom:44px;
-}
-.am-row{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:.875rem;}
-.am-row:first-child{border-top:1px solid var(--line);}
-.am-k{font-family:var(--mono);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);align-self:center;}
-.am-v{font-weight:500;}
-.am-v.open{color:#16a34a;}
-
-/* photo strip in sidebar */
-.sidebar-imgs{margin-top:32px;display:grid;grid-template-columns:1fr 1fr;gap:3px;}
-.si-img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;filter:grayscale(30%) contrast(1.06) brightness(.94);transition:filter .4s;}
-.si-img:hover{filter:grayscale(0%) contrast(1.04);}
-.si-caption{grid-column:1/-1;font-family:var(--mono);font-size:.5rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);padding:8px 0;text-align:center;}
-
-/* about right */
-.about-text p{font-size:1.05rem;line-height:1.88;color:var(--ink2);font-weight:300;margin-bottom:22px;}
-.about-text p strong{color:var(--ink);font-weight:500;}
-
-.pull-quote{
-  font-family:var(--serif);
-  font-size:clamp(1.5rem,2.8vw,2.4rem);
-  font-style:italic;line-height:1.35;
-  color:var(--ink);font-weight:400;
-  margin:44px 0;padding:32px 36px;
-  border-left:2px solid var(--ink);
-  background:rgba(0,0,0,.025);
-  letter-spacing:-.01em;
-}
-
-.about-note{
-  margin-top:40px;padding:28px 32px;
-  border:1px solid var(--line);
-  background:rgba(0,0,0,.02);
-}
-.an-label{font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:10px;}
-.about-note p{font-size:.9rem;line-height:1.72;color:var(--ink2);font-weight:300;}
-.about-note p strong{color:var(--ink);font-weight:500;}
-
-/* IMAGE MOSAIC */
-.img-mosaic{display:grid;grid-template-columns:2.2fr 1fr 1fr;height:260px;gap:2px;overflow:hidden;}
-.im-cell{overflow:hidden;position:relative;}
-.im-cell img{width:100%;height:100%;object-fit:cover;filter:grayscale(28%) contrast(1.07) brightness(.9);transition:transform .7s ease,filter .5s ease;}
-.im-cell:hover img{transform:scale(1.05);filter:grayscale(0%) contrast(1.04) brightness(.95);}
-.im-label{position:absolute;bottom:14px;left:16px;font-family:var(--mono);font-size:.5rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.55);}
-
-/* WORK */
-.work-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px;gap:24px;flex-wrap:wrap;}
-.work-heading{
-  font-family:var(--serif);
-  font-size:clamp(3rem,5vw,6.5rem);
-  font-weight:400;font-style:italic;
-  letter-spacing:-.04em;line-height:.9;
-}
-.work-count{font-family:var(--mono);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);align-self:flex-end;}
-
-/* Featured project */
-.proj-featured{
-  display:grid;grid-template-columns:1fr 1fr;gap:0;
-  border:1px solid var(--line);margin-bottom:4px;
-  text-decoration:none;color:inherit;
-  position:relative;overflow:hidden;
-}
-.proj-featured::after{content:'';position:absolute;inset:0;background:var(--ink);transform:scaleY(0);transform-origin:bottom;transition:transform .42s cubic-bezier(.16,1,.3,1);z-index:0;}
-.proj-featured:hover::after{transform:scaleY(1);}
-.proj-featured:hover .pf-l,.proj-featured:hover .pf-r,
-.proj-featured:hover .pf-tag,.proj-featured:hover .pf-arr,
-.proj-featured:hover .pf-desc,.proj-featured:hover .pf-status,
-.proj-featured:hover .pf-bottom-text{color:rgba(255,255,255,.7)!important;}
-.proj-featured:hover .pf-title{color:#fff!important;}
-.proj-featured:hover .pf-tag{border-color:rgba(255,255,255,.12)!important;}
-.proj-featured:hover .pf-arr{transform:translate(5px,-5px);color:#fff!important;}
-
-.pf-l,.pf-r{padding:44px;position:relative;z-index:1;transition:all .2s;}
-.pf-l{border-right:1px solid var(--line);}
-.pf-r{display:flex;flex-direction:column;justify-content:space-between;gap:24px;}
-.pf-num{font-family:var(--mono);font-size:.54rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink3);margin-bottom:16px;transition:color .2s;}
-.pf-title{font-family:var(--serif);font-size:clamp(2.2rem,3.5vw,3.5rem);font-weight:400;font-style:italic;letter-spacing:-.03em;line-height:1;margin-bottom:18px;transition:color .2s;}
-.pf-desc{font-size:.92rem;line-height:1.72;color:var(--ink2);font-weight:300;transition:color .2s;}
-.pf-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:28px;}
-.pf-tag{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);color:var(--ink3);padding:5px 12px;transition:all .2s;}
-.pf-status{font-family:var(--mono);font-size:.54rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);border:1px solid var(--line);padding:7px 14px;display:inline-block;align-self:flex-start;transition:all .2s;}
-.pf-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;filter:grayscale(20%) contrast(1.04);flex-shrink:0;}
-.pf-bottom-text{font-size:.82rem;line-height:1.6;color:var(--ink3);font-weight:300;transition:color .2s;}
-.pf-arr{font-size:1.1rem;color:var(--ink3);align-self:flex-end;transition:all .28s;display:block;}
-
-/* Project rows */
-.proj-rows{display:flex;flex-direction:column;}
-.pr{
-  display:grid;grid-template-columns:52px 1fr 1fr 96px 64px;
-  align-items:center;gap:28px;
-  padding:26px 0;border-top:1px solid var(--line);
-  text-decoration:none;color:inherit;
-  position:relative;overflow:hidden;
-}
-.pr:last-child{border-bottom:1px solid var(--line);}
-.pr::after{content:'';position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:left;transition:transform .38s cubic-bezier(.16,1,.3,1);z-index:0;}
-.pr:hover::after{transform:scaleX(1);}
-.pr>*{position:relative;z-index:1;}
-.pr:hover .pri,.pr:hover .prt,.pr:hover .prd,.pr:hover .prtech,.pr:hover .prst,.pr:hover .pra{color:rgba(255,255,255,.65)!important;}
-.pr:hover .prt{color:#fff!important;}
-.pr:hover .prst{border-color:rgba(255,255,255,.15)!important;}
-.pr:hover .pra{transform:translate(4px,-4px);color:#fff!important;}
-.pri{font-family:var(--mono);font-size:.54rem;color:var(--ink3);letter-spacing:.1em;transition:color .2s;}
-.prt{font-family:var(--serif);font-size:clamp(1.15rem,2vw,1.75rem);font-weight:400;font-style:italic;letter-spacing:-.02em;display:block;margin-bottom:4px;transition:color .2s;}
-.prtech{font-family:var(--mono);font-size:.55rem;color:var(--ink3);letter-spacing:.06em;transition:color .2s;}
-.prd{font-size:.82rem;color:var(--ink3);line-height:1.58;font-weight:300;transition:color .2s;}
-.prst{display:inline-block;font-family:var(--mono);font-size:.5rem;letter-spacing:.13em;text-transform:uppercase;border:1px solid var(--line);padding:6px 12px;color:var(--ink3);transition:all .2s;white-space:nowrap;}
-.pra{font-size:.9rem;color:var(--ink3);text-align:right;transition:all .25s;}
-
-/* EXPERIENCE */
-.exp-heading{font-family:var(--serif);font-size:clamp(3rem,5vw,6.5rem);font-weight:400;font-style:italic;letter-spacing:-.04em;line-height:.9;margin-bottom:60px;}
-.exp-list{display:flex;flex-direction:column;}
-.exp-item{display:grid;grid-template-columns:240px 1fr;gap:72px;padding:44px 0;border-top:1px solid var(--line);}
-.exp-item:last-child{border-bottom:1px solid var(--line);}
-.exp-co{font-size:1.05rem;font-weight:600;letter-spacing:-.01em;margin-bottom:5px;}
-.exp-role{font-family:var(--mono);font-size:.57rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px;}
-.exp-date{font-family:var(--mono);font-size:.56rem;color:var(--ink3);letter-spacing:.06em;line-height:1.65;}
-.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:10px;}
-.exp-bullets li{font-size:.9rem;line-height:1.68;color:var(--ink2);padding-left:20px;position:relative;font-weight:300;}
-.exp-bullets li::before{content:'—';position:absolute;left:0;color:var(--ink3);font-size:.8rem;}
-.exp-highlight{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
-.exp-hl{font-family:var(--mono);font-size:.52rem;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);color:var(--ink3);padding:5px 12px;}
-
-/* STACK */
-.stack-heading{font-family:var(--serif);font-size:clamp(3rem,5vw,6.5rem);font-weight:400;font-style:italic;letter-spacing:-.04em;line-height:.9;margin-bottom:60px;}
-.stack-cols{display:grid;grid-template-columns:repeat(5,1fr);gap:0;}
-.sk-col{border-right:1px solid var(--line);padding-right:28px;margin-right:28px;}
-.sk-col:last-child{border-right:none;padding-right:0;margin-right:0;}
-.sk-title{font-family:var(--mono);font-size:.56rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--line);}
-.sk-item{
-  font-size:.92rem;font-weight:300;color:var(--ink2);
-  padding:9px 0;border-bottom:1px solid var(--line);
-  transition:color .15s,padding-left .22s;cursor:default;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.sk-item:last-child{border-bottom:none;}
-.sk-item:hover{color:var(--ink);padding-left:6px;}
-.sk-item.star::after{content:'★';font-size:.55rem;color:var(--ink3);opacity:.5;}
-
-/* CONTACT */
-.contact-heading{font-family:var(--serif);font-size:clamp(4rem,9vw,11rem);font-weight:400;font-style:italic;letter-spacing:-.05em;line-height:.85;margin-bottom:72px;}
-.contact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:96px;align-items:start;}
-.contact-links{display:flex;flex-direction:column;}
-.cl{display:flex;align-items:center;justify-content:space-between;padding:22px 0;border-top:1px solid var(--line);text-decoration:none;color:var(--ink);transition:padding-left .25s;}
-.cl:last-child{border-bottom:1px solid var(--line);}
-.cl:hover{padding-left:14px;}
-.cl-main{display:flex;flex-direction:column;gap:3px;}
-.cl-l{font-size:1.05rem;font-weight:500;letter-spacing:-.01em;}
-.cl-v{font-family:var(--mono);font-size:.6rem;color:var(--ink3);letter-spacing:.06em;}
-.cl-a{color:var(--ink3);font-size:.85rem;transition:transform .25s,color .2s;}
-.cl:hover .cl-a{transform:translate(4px,-4px);color:var(--ink);}
-
-.contact-right{}
-.cr-t{font-family:var(--mono);font-size:.57rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:32px;}
-.cr-items{display:flex;flex-direction:column;gap:0;}
-.cri{display:flex;gap:24px;padding:24px 0;border-bottom:1px solid var(--line);align-items:center;}
-.cri:first-child{border-top:1px solid var(--line);}
-.cri-n{font-family:var(--serif);font-size:3rem;font-style:italic;font-weight:400;line-height:1;min-width:80px;letter-spacing:-.02em;}
-.cri-text{font-size:.88rem;color:var(--ink2);line-height:1.55;font-weight:300;}
-.cri-text strong{color:var(--ink);font-weight:500;display:block;margin-bottom:2px;}
-
-/* FOOTER */
-footer{border-top:1px solid var(--line);padding:24px 52px;display:flex;justify-content:space-between;align-items:center;}
-footer p{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;color:var(--ink3);}
-
-/* ANIMS */
-@keyframes fromBot{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
-@keyframes fromRight{from{opacity:0;transform:translateX(22px);}to{opacity:1;transform:none;}}
-.r{opacity:0;transform:translateY(18px);transition:opacity .72s ease,transform .72s ease;}
-.r.on{opacity:1;transform:none;}
-.r1{transition-delay:.08s;}.r2{transition-delay:.16s;}.r3{transition-delay:.24s;}.r4{transition-delay:.32s;}
-
-::-webkit-scrollbar{width:2px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--ink3);}
-
-/* MOBILE */
-@media(max-width:860px){
-  body{cursor:auto;} .c,.cr{display:none;}
-  nav{padding:0 20px;} .nr a:not(.resume-btn){display:none;}
-  .hero{padding:90px 20px 56px;}
-  .hero-photo-wrap{display:none;}
-  .hero-h{font-size:clamp(3.2rem,13vw,6rem);}
-  .hero-bottom{flex-direction:column;align-items:flex-start;gap:22px;}
-  .numbers{grid-template-columns:1fr 1fr;}
-  .num-block{padding:32px 20px;}
-  .section{padding:60px 20px;}
-  .about-grid{grid-template-columns:1fr;gap:40px;}
-  .about-sticky{position:static;}
-  .about-heading{font-size:clamp(2.5rem,10vw,4.5rem);}
-  .proj-featured{grid-template-columns:1fr;}
-  .pf-l{border-right:none;border-bottom:1px solid var(--line);}
-  .pr{grid-template-columns:36px 1fr 64px;gap:14px;}
-  .prd,.prtech{display:none;}
-  .img-mosaic{grid-template-columns:1fr;height:auto;}
-  .im-cell{height:190px;}
-  .stack-cols{grid-template-columns:1fr 1fr;gap:24px;}
-  .sk-col{border-right:none;padding:0;margin:0;}
-  .exp-item{grid-template-columns:1fr;gap:16px;}
-  .work-heading,.exp-heading,.stack-heading,.contact-heading{font-size:clamp(2.5rem,10vw,5rem);}
-  .contact-grid{grid-template-columns:1fr;gap:48px;}
-  footer{flex-direction:column;gap:8px;text-align:center;padding:20px;}
+@media (max-width:720px){
+  .wrap{padding:0 20px;}
+  .gutter{flex-basis:100%;display:flex;gap:10px;align-items:baseline;}
+  .body{padding-left:16px;}
+  .note{flex-basis:100%;padding-left:16px;}
+  .cover-label{padding:22px;}
 }
 </style>
 </head>
 <body>
-<div class="c" id="c"></div>
-<div class="cr" id="cr"></div>
+<a class="skip" href="#main">Skip to content</a>
 
-<!-- NAV -->
-<nav>
-  <a href="#" class="nl">Prerana Nale</a>
-  <div class="nr">
-    <a href="#about">About</a>
-    <a href="#work">Work</a>
-    <a href="#stack">Stack</a>
+<div class="wrap">
+<div class="bar">
+  <span class="brand">Notebook No. 4 · P. Nale</span>
+  <nav aria-label="Primary">
+    <a href="#e1">Experiments</a>
+    <a href="#history">Lab history</a>
     <a href="#contact">Contact</a>
-    <a href="Nale_Prerana__Resume.pdf" target="_blank" class="resume-btn">
-      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 1.5h5.5L10 4v6.5H2V1.5z"/><path d="M7.5 1.5V4H10"/><path d="M4 7h4M4 8.8h2.5"/></svg>
-      Résumé
-    </a>
+    <a href="Nale_Prerana__Resume%20.pdf">Resume</a>
+    <button type="button" class="toggle" id="theme" aria-pressed="false">Lights off</button>
+  </nav>
+</div>
+</div>
+
+<main id="main" class="wrap">
+
+<section class="cover" aria-label="Cover">
+  <div class="cover-label">
+    <div class="label">Notebook No. 4 · AI engineering experiments · 2021 to present</div>
+    <h1>Prerana Nale</h1>
+    <div class="lede">Trained in biotechnology. Now I run experiments on software that learns, retrieves and repairs itself.</div>
+    <div class="label">MS Software Engineering, Arizona State University · GPA 4.00 · Phoenix, AZ</div>
+    <div class="cover-actions">
+      <a class="btn btn-fill" href="Nale_Prerana__Resume%20.pdf">Download resume (PDF)</a>
+      <a class="btn btn-line" href="#e1">See the experiments</a>
+    </div>
   </div>
+  <div class="cover-side">
+    <figure class="photo">
+      <img src="Prerana_Nale.jpeg" alt="Portrait of Prerana Nale" width="170" height="212">
+      <figcaption>Fig. 0. The researcher.</figcaption>
+    </figure>
+    <div class="hand found">If found, please email <a href="mailto:naleprerana11@gmail.com">naleprerana11@gmail.com</a>. Open to AI engineering roles.</div>
+  </div>
+</section>
+
+<nav class="contents" aria-label="Contents">
+  <a href="#e1"><span>001 Data Flywheel Pipeline</span><span class="st">live</span></a>
+  <a href="#e2"><span>002 MedCareBot</span><span class="st">capstone</span></a>
+  <a href="#e3"><span>003 Self-Healing CI/CD Agent</span><span class="st">live</span></a>
+  <a href="#e4"><span>004 Orange Sulphur</span><span class="st">live</span></a>
+  <a href="#e5"><span>005 ExceptionDesk</span><span class="st">experiment running</span></a>
 </nav>
 
-<!-- HERO -->
-<section class="hero" id="home">
-  <div class="hero-photo-wrap">
-    <img src="Prerana_Nale.jpeg" alt="Prerana Nale">
-    <div class="hero-photo-caption">AI Engineer · Phoenix, AZ</div>
+<article id="e1" class="entry">
+  <div class="gutter"><div class="label">Entry</div><div class="num">001</div></div>
+  <div class="body">
+    <h2>Data Flywheel Pipeline</h2>
+    <div class="field"><div class="label">Question</div><div>Can a recommender retrain and promote itself without ever shipping a worse model?</div></div>
+    <div class="field"><div class="label">Method</div><div>User feedback streams through Redis Streams. At 50+ events, retraining starts on its own. An SVD matrix factorization model, trained on 100k MovieLens ratings, must pass two gates before promotion: RMSE of 0.947 or better, and 100% catalog coverage.</div></div>
+    <div class="field"><div class="label">Apparatus</div><div>7 services in Docker Compose: Inference, Feedback, Feature Pipeline, Scheduler, Trainer, Redis, MLflow. FastAPI, React, pytest.</div></div>
+    <div class="field"><div class="label">Result</div><div><span class="result">Models hot-swap into production with no downtime, and no model-promotion step is manual.</span></div></div>
+    <a class="link" href="https://github.com/preranale/data-flywheel">Read the code →</a>
   </div>
+  <div class="note hand n1">retrains itself at 50+ events. no manual promotion!</div>
+</article>
 
-  <div class="hero-label">AI Engineer & Full-Stack Developer <span class="sdot"></span></div>
+<article id="e2" class="entry">
+  <div class="gutter"><div class="label">Entry</div><div class="num">002</div></div>
+  <div class="body">
+    <h2>MedCareBot</h2>
+    <div class="field"><div class="label">Question</div><div>Can a health chatbot stay grounded in drug data, and stay up when a model provider fails?</div></div>
+    <div class="field"><div class="label">Method</div><div>83,843 FDA drug records are embedded and indexed in ChromaDB. Relevant chunks are retrieved at query time and passed to GPT-4o-mini to generate grounded answers. LLM-generated knowledge checks test whether users understood.</div></div>
+    <div class="field"><div class="label">Safeguards</div><div>A 3-layer safety system (intent filter, prompt filter, response filter) and automatic fallback from OpenAI to Gemini 1.5 Flash.</div></div>
+    <div class="field"><div class="label">Conditions</div><div>Capstone for industry sponsor MyEdMaster: 6 engineers, 6 Agile sprints. React, Django, PostgreSQL, AWS Cognito.</div></div>
+    <div class="field"><div class="label">Result</div><div><span class="result">136 automated tests (85 Vitest, 51 pytest); the suite caught 3 critical retrieval bugs before user acceptance testing.</span></div></div>
+    <figure class="fig">
+      <img src="capstone_poster.jpeg" alt="MedCareBot capstone poster" loading="lazy">
+      <figcaption>Fig. 2.1. Capstone poster, SER 517.</figcaption>
+    </figure>
+    <div class="links">
+      <a class="link" href="https://www.youtube.com/watch?v=oxlqR-4yjKU">Watch the demo →</a>
+      <a class="link" href="https://github.com/meducational/ser517-industry-project-group-12-spring-2026">Read the code →</a>
+    </div>
+  </div>
+  <div class="note hand n2">83,843 records, 136 tests, zero downtime on provider fallback.</div>
+</article>
 
-  <h1 class="hero-h">
-    I build<br>
-    systems that<br>
-    <span class="it">think.</span>
-    <span class="outline">Adapt.</span>
-  </h1>
+<article id="e3" class="entry">
+  <div class="gutter"><div class="label">Entry</div><div class="num">003</div></div>
+  <div class="body">
+    <h2>Self-Healing CI/CD Agent</h2>
+    <div class="field"><div class="label">Question</div><div>What if a failing build could diagnose and repair itself?</div></div>
+    <div class="field"><div class="label">Method</div><div>A LangGraph agent, powered by a Groq-hosted LLM, detects failing tests, reasons about the root cause, patches the code and reruns CI.</div></div>
+    <div class="field"><div class="label">Result</div><div><span class="result">The detect, diagnose, patch, rerun loop runs without human intervention.</span></div></div>
+    <a class="link" href="https://github.com/preranale/self-healing-agent">Read the code →</a>
+  </div>
+  <div class="note hand n3">CI that fixes its own failures.</div>
+</article>
 
-  <div class="hero-bottom">
-    <p class="hero-desc">
-      RAG pipelines over <strong>83,000 documents.</strong>
-      ML that retrains itself from live feedback.
-      Agents that debug their own code.
-      Shipped in production, backed by <strong>science.</strong>
-      Based in Phoenix, AZ — graduating May 2026.
-    </p>
-    <div class="hero-actions">
-      <a href="#work" class="btn btn-dark">
-        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 6h8M6.5 3l3.5 3-3.5 3"/></svg>
-        See my work
-      </a>
-      <a href="Nale_Prerana__Resume.pdf" target="_blank" class="btn btn-bd">
-        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 1.5h5.5L10 4v6.5H2V1.5z"/><path d="M6 7.5V4M4.5 6L6 7.5 7.5 6"/></svg>
-        Download CV
-      </a>
-      <a href="#contact" class="btn btn-bd">Say hello</a>
+<article id="e4" class="entry">
+  <div class="gutter"><div class="label">Entry</div><div class="num">004</div></div>
+  <div class="body">
+    <h2>Orange Sulphur</h2>
+    <div class="field"><div class="label">Question</div><div>Can an online store work fully by voice, and for colorblind shoppers, from day one?</div></div>
+    <div class="field"><div class="label">Method</div><div>React 19, TypeScript and Redux Toolkit, with voice command navigation through the Web Speech API, ARIA live regions and colorblind-accessible modes built in from the start.</div></div>
+    <div class="field"><div class="label">Result</div><div><span class="result">95/100 Lighthouse (top 2% globally) and WCAG 2.1 AA compliance.</span></div></div>
+    <a class="link" href="https://orange-sulphure.netlify.app/">Open the live storefront →</a>
+  </div>
+  <div class="note hand n4">95/100 Lighthouse. try it with your voice!</div>
+</article>
+
+<article id="e5" class="entry">
+  <div class="gutter"><div class="label">Entry</div><div class="num">005</div></div>
+  <div class="body">
+    <h2>ExceptionDesk</h2>
+    <div class="field"><div class="label">Question</div><div>When does an AI agent beat a plain script at resolving delayed or damaged package exceptions, and at what cost?</div></div>
+    <div class="field"><div class="label">Planned method</div><div>A multi-agent system that retrieves shipping policy, predicts delay risk, re-plans routes with an optimizer and pauses for human approval before costly actions, compared against a scripted baseline on held-out scenarios. Python, Google ADK, OR-Tools, scikit-learn.</div></div>
+    <div class="pending">RESULT: not yet recorded. Experiment in progress.</div>
+  </div>
+  <div class="note hand n1">results pending. check back soon.</div>
+</article>
+
+<section id="history" class="lower" aria-label="Lab history and equipment">
+  <div class="col-a">
+    <h2>Lab history</h2>
+    <div class="tablewrap">
+      <table>
+        <caption class="sr">Work and teaching history</caption>
+        <thead><tr><th scope="col">Dates</th><th scope="col">Role</th><th scope="col">Where</th></tr></thead>
+        <tbody>
+          <tr><td>Jul 2026 to now</td><td>Software Engineer Intern</td><td>Ipser Lab LLC</td></tr>
+          <tr><td>Aug to Dec 2025</td><td>Instructional Assistant</td><td>Arizona State University</td></tr>
+          <tr><td>Sep 2021 to Jan 2024</td><td>Software Engineer</td><td>Statics Solutions</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small">At Ipser Lab: React, TypeScript and Java REST APIs, with automated tests wired into the deployment pipeline. At ASU: weekly Java labs for 150+ students. At Statics Solutions: 75% faster throughput, 40% lower query latency and 60% faster releases.</p>
+  </div>
+  <div class="col-b">
+    <h2>Materials and equipment</h2>
+    <div class="gear">
+      <div><span class="label">AI and ML</span><br>RAG, LLMs, LangGraph, ChromaDB, MLflow, Redis Streams</div>
+      <div><span class="label">Languages</span><br>Python, TypeScript, JavaScript, Java, Golang</div>
+      <div><span class="label">Cloud and DevOps</span><br>AWS, Docker, Terraform, Jenkins, GitHub Actions</div>
+      <div><span class="label">Data</span><br>PostgreSQL, MySQL, MongoDB, Redis</div>
     </div>
   </div>
 </section>
 
-<!-- MARQUEE -->
-<div class="marquee-bar">
-  <div class="marquee-track">
-    <span class="mi hi">RAG Pipelines</span><span class="mi">Python</span><span class="mi hi">LangGraph</span><span class="mi">FastAPI</span><span class="mi hi">Self-Improving ML</span><span class="mi">TypeScript</span><span class="mi hi">ChromaDB</span><span class="mi">React 19</span><span class="mi hi">Autonomous Agents</span><span class="mi">AWS</span><span class="mi hi">MLflow</span><span class="mi">Docker</span><span class="mi hi">Vector Search</span><span class="mi">PostgreSQL</span><span class="mi hi">LLMs</span><span class="mi">Spring Boot</span><span class="mi hi">Hallucination Detection</span><span class="mi">Redis Streams</span>
-    <span class="mi hi">RAG Pipelines</span><span class="mi">Python</span><span class="mi hi">LangGraph</span><span class="mi">FastAPI</span><span class="mi hi">Self-Improving ML</span><span class="mi">TypeScript</span><span class="mi hi">ChromaDB</span><span class="mi">React 19</span><span class="mi hi">Autonomous Agents</span><span class="mi">AWS</span><span class="mi hi">MLflow</span><span class="mi">Docker</span><span class="mi hi">Vector Search</span><span class="mi">PostgreSQL</span><span class="mi hi">LLMs</span><span class="mi">Spring Boot</span><span class="mi hi">Hallucination Detection</span><span class="mi">Redis Streams</span>
+<section class="training" aria-label="Earlier training">
+  <div class="txt">
+    <div class="label">Training</div>
+    <p style="margin:6px 0 0">MS in Software Engineering, Arizona State University, Aug 2024 to May 2026, GPA 4.00. Before that, a B.Tech in Biotechnology, where I learned to run controlled experiments and never trust a result I had not stress-tested.</p>
   </div>
-</div>
-
-<!-- NUMBERS -->
-<div class="numbers">
-  <div class="num-block r">
-    <div class="num-n">4.0</div>
-    <div class="num-l">Perfect GPA</div>
-    <div class="num-sub">MS Software Engineering<br>Arizona State University</div>
-  </div>
-  <div class="num-block r r1">
-    <div class="num-n">83k</div>
-    <div class="num-l">Documents indexed</div>
-    <div class="num-sub">FDA records in production<br>RAG pipeline via ChromaDB</div>
-  </div>
-  <div class="num-block r r2">
-    <div class="num-n">7</div>
-    <div class="num-l">Microservices</div>
-    <div class="num-sub">Self-retraining ML in<br>Docker Compose orchestration</div>
-  </div>
-  <div class="num-block r r3">
-    <div class="num-n">60%</div>
-    <div class="num-l">Faster releases</div>
-    <div class="num-sub">CI/CD pipeline optimization<br>at 4 Systems Info Solutions</div>
-  </div>
-</div>
-
-<!-- ABOUT -->
-<section class="section" id="about">
-  <div class="sec-eyebrow r">01 — About me</div>
-  <div class="about-grid">
-
-    <div class="about-sticky r">
-      <h2 class="about-heading">From petri dishes to production AI.</h2>
-      <div class="am">
-        <div class="am-row"><span class="am-k">Role</span><span class="am-v">AI / Full-Stack Engineer</span></div>
-        <div class="am-row"><span class="am-k">Location</span><span class="am-v">Phoenix, AZ</span></div>
-        <div class="am-row"><span class="am-k">University</span><span class="am-v">Arizona State</span></div>
-        <div class="am-row"><span class="am-k">GPA</span><span class="am-v">4.0 / 4.0</span></div>
-        <div class="am-row"><span class="am-k">Graduating</span><span class="am-v">May 2026</span></div>
-        <div class="am-row"><span class="am-k">Status</span><span class="am-v open">Open to roles ↗</span></div>
-      </div>
-      <div class="sidebar-imgs">
-        <img class="si-img" src="https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=300&h=300&fit=crop&auto=format" alt="AI">
-        <img class="si-img" src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=300&h=300&fit=crop&auto=format" alt="Code">
-        <span class="si-caption">AI systems · thoughtful engineering</span>
-      </div>
-    </div>
-
-    <div class="r r1">
-      <div class="about-text">
-        <p>I started with a <strong>B.Tech in Biotechnology</strong> — a discipline that wired me to think in systems, run controlled experiments, and never trust a result I haven't stress-tested. That instinct transferred perfectly into software engineering.</p>
-
-        <div class="pull-quote">"If you can't explain the data pipeline end-to-end, you don't own the model."</div>
-
-        <p>At <strong>4 Systems Info Solutions</strong> I spent over two years building at real scale — Spring Boot APIs processing millions of records, database schemas tuned to shave 40% off query latency, and CI/CD pipelines that cut release windows by 60%. Real systems, real traffic, real accountability.</p>
-        <p>Now at <strong>Arizona State University</strong> (GPA 4.0), I've gone deeper into intelligence: embedding 83,000+ FDA documents for RAG retrieval, architecting a 7-service ML pipeline that retrains itself from live user feedback, and writing a LangGraph agent that detects, diagnoses, and patches its own bugs.</p>
-        <p>I also taught <strong>150+ students Java</strong> as an Instructional Assistant — because the clearest proof you understand something is your ability to explain it to someone who doesn't.</p>
-      </div>
-      <div class="about-note">
-        <div class="an-label">Currently building</div>
-        <p><strong>Mnemo</strong> — an AI assistant solving three real GenAI production problems at once: persistent memory across sessions, RAG document grounding so it stays factual, and confidence-scored hallucination detection so you can actually trust it. Stack: LangGraph · Claude API · ChromaDB · PostgreSQL.</p>
-      </div>
-    </div>
-
+  <div class="plates">
+    <figure><img src="grad_1.jpeg" alt="Prerana at ASU graduation" loading="lazy"><figcaption>Plate 1</figcaption></figure>
+    <figure><img src="grad_2.jpeg" alt="Prerana with her diploma" loading="lazy"><figcaption>Plate 2</figcaption></figure>
   </div>
 </section>
 
-<!-- IMAGE MOSAIC -->
-<div class="img-mosaic r">
-  <div class="im-cell">
-    <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=900&h=520&fit=crop&auto=format" alt="Neural networks">
-    <span class="im-label">Neural networks</span>
+<section id="contact" class="return" aria-label="Contact">
+  <div>
+    <div class="label">If found, return to</div>
+    <div class="big">Prerana Nale, Phoenix, AZ</div>
   </div>
-  <div class="im-cell">
-    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=500&h=520&fit=crop&auto=format" alt="Data pipelines">
-    <span class="im-label">Data pipelines</span>
-  </div>
-  <div class="im-cell">
-    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=500&h=520&fit=crop&auto=format" alt="Code">
-    <span class="im-label">Production code</span>
-  </div>
-</div>
-
-<!-- WORK -->
-<section class="section" id="work">
-  <div class="sec-eyebrow r">02 — Selected work</div>
-  <div class="work-header r">
-    <h2 class="work-heading">Projects that<br>ship and <em>think.</em></h2>
-    <span class="work-count">5 projects</span>
-  </div>
-
-  <!-- Featured -->
-  <a href="https://github.com/preranale/mnemo" target="_blank" class="proj-featured r">
-    <div class="pf-l">
-      <div class="pf-num">01 — Featured project</div>
-      <div class="pf-title">Mnemo</div>
-      <p class="pf-desc">An AI assistant solving three production-grade GenAI problems simultaneously. <strong style="color:var(--ink);font-weight:500;">Persistent memory</strong> — so it actually remembers you across sessions. <strong style="color:var(--ink);font-weight:500;">RAG document grounding</strong> — so it stays factual and cites sources. <strong style="color:var(--ink);font-weight:500;">Confidence-scored hallucination detection</strong> — so you know when to trust it.</p>
-      <div class="pf-tags">
-        <span class="pf-tag">LangGraph</span>
-        <span class="pf-tag">RAG</span>
-        <span class="pf-tag">ChromaDB</span>
-        <span class="pf-tag">Claude API</span>
-        <span class="pf-tag">PostgreSQL</span>
-        <span class="pf-tag">Python</span>
-      </div>
-    </div>
-    <div class="pf-r">
-      <span class="pf-status">In progress · 2026</span>
-      <img
-        src="https://images.unsplash.com/photo-1680783954745-b7e189981dd7?w=700&h=360&fit=crop&auto=format"
-        alt="AI memory system"
-        class="pf-img"
-        onerror="this.style.display='none'"
-      >
-      <p class="pf-bottom-text">Building the memory layer that LLMs are missing — a stateful, grounded, trustworthy AI assistant.</p>
-      <span class="pf-arr">↗</span>
-    </div>
-  </a>
-
-  <!-- Rows -->
-  <div class="proj-rows">
-    <a href="https://github.com/preranale/data-flywheel" target="_blank" class="pr r">
-      <span class="pri">02</span>
-      <div>
-        <span class="prt">Data Flywheel Pipeline</span>
-        <span class="prtech">FastAPI · Redis Streams · SVD · MLflow · Docker Compose</span>
-      </div>
-      <div class="prd">Self-improving ML recommender. 7 microservices. Feedback auto-triggers retraining at 50+ events. RMSE 0.947 on 100k ratings — models hot-swap without downtime.</div>
-      <span class="prst">Live</span>
-      <span class="pra">↗</span>
-    </a>
-    <a href="https://github.com/preranale/self-healing-agent" target="_blank" class="pr r">
-      <span class="pri">03</span>
-      <div>
-        <span class="prt">Self-Healing CI/CD Agent</span>
-        <span class="prtech">LangGraph · Groq LLM · Python · Autonomous Agent</span>
-      </div>
-      <div class="prd">Detects failing tests, reasons through root cause, patches code, reruns CI — zero human input. Infrastructure that maintains itself.</div>
-      <span class="prst">Live</span>
-      <span class="pra">↗</span>
-    </a>
-    <a href="https://github.com/preranale" target="_blank" class="pr r">
-      <span class="pri">04</span>
-      <div>
-        <span class="prt">MedCareBot</span>
-        <span class="prtech">GPT-4o-mini · ChromaDB · Django · AWS Cognito · React</span>
-      </div>
-      <div class="prd">RAG over 83,843 FDA records. LLM-generated knowledge checks, 136 tests across 5 sprints, team of 6.</div>
-      <span class="prst">Capstone</span>
-      <span class="pra">↗</span>
-    </a>
-    <a href="https://orange-sulphure.netlify.app/" target="_blank" class="pr r">
-      <span class="pri">05</span>
-      <div>
-        <span class="prt">Orange Sulphur</span>
-        <span class="prtech">React 19 · TypeScript · Redux Toolkit · Web Speech API</span>
-      </div>
-      <div class="prd">95/100 Lighthouse — top 2% globally. WCAG 2.1 AA, voice command navigation, colorblind modes.</div>
-      <span class="prst">Live</span>
-      <span class="pra">↗</span>
-    </a>
+  <div class="links">
+    <a class="link" href="mailto:naleprerana11@gmail.com">Email</a>
+    <a class="link" href="https://www.linkedin.com/in/prerana-nale/">LinkedIn</a>
+    <a class="link" href="https://github.com/preranale">GitHub</a>
+    <a class="link" href="Nale_Prerana__Resume%20.pdf">Resume (PDF)</a>
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section class="section" id="experience">
-  <div class="sec-eyebrow r">03 — Experience</div>
-  <h2 class="exp-heading r">Where I've<br><em>worked.</em></h2>
-  <div class="exp-list">
-    <div class="exp-item r">
-      <div>
-        <div class="exp-co">4 Systems Info Solutions</div>
-        <div class="exp-role">Full-Stack Developer</div>
-        <div class="exp-date">Aug 2021 — Jan 2024<br>Pune, India</div>
-      </div>
-      <div>
-        <ul class="exp-bullets">
-          <li>Built full-stack systems in Python, JavaScript & Java with Spring Boot REST APIs and React frontends, processing millions of records at 75% faster throughput.</li>
-          <li>Optimized PostgreSQL & MySQL schemas with stored procedures and indexing — cut query latency 40% on high-traffic endpoints.</li>
-          <li>JWT + RBAC auth across services; decomposed monoliths into event-driven microservices with 90%+ test coverage (JUnit, pytest).</li>
-          <li>Jenkins + Docker CI/CD pipelines reducing release cycle time by 60%; shipped across 8 Agile sprints with product and QA.</li>
-        </ul>
-        <div class="exp-highlight">
-          <span class="exp-hl">75% faster throughput</span>
-          <span class="exp-hl">40% latency reduction</span>
-          <span class="exp-hl">60% faster releases</span>
-          <span class="exp-hl">90%+ test coverage</span>
-        </div>
-      </div>
-    </div>
-    <div class="exp-item r">
-      <div>
-        <div class="exp-co">Arizona State University</div>
-        <div class="exp-role">Instructional Assistant</div>
-        <div class="exp-date">Aug — Dec 2025<br>Tempe, AZ</div>
-      </div>
-      <ul class="exp-bullets">
-        <li>Weekly Java labs for 150+ students on OOP, data structures, and algorithms — consistently highly rated in student feedback.</li>
-        <li>Held office hours, code reviews, and co-wrote faculty assessments for Principles of Programming.</li>
-      </ul>
-    </div>
-  </div>
-</section>
+</main>
 
-<!-- STACK -->
-<section class="section" id="stack">
-  <div class="sec-eyebrow r">04 — Technology</div>
-  <h2 class="stack-heading r">Tools I<br><em>master.</em></h2>
-  <div class="stack-cols r">
-    <div class="sk-col">
-      <div class="sk-title">AI & ML</div>
-      <div class="sk-item star">LangGraph</div>
-      <div class="sk-item star">OpenAI API</div>
-      <div class="sk-item star">ChromaDB</div>
-      <div class="sk-item">MLflow</div>
-      <div class="sk-item">RAG Pipelines</div>
-      <div class="sk-item">Redis Streams</div>
-      <div class="sk-item">SVD</div>
-      <div class="sk-item">Prompt Eng.</div>
-    </div>
-    <div class="sk-col">
-      <div class="sk-title">Backend</div>
-      <div class="sk-item star">Python</div>
-      <div class="sk-item">FastAPI / Flask</div>
-      <div class="sk-item">Node.js</div>
-      <div class="sk-item star">Spring Boot</div>
-      <div class="sk-item">Golang</div>
-      <div class="sk-item">REST APIs</div>
-      <div class="sk-item">Microservices</div>
-    </div>
-    <div class="sk-col">
-      <div class="sk-title">Frontend</div>
-      <div class="sk-item star">React 19</div>
-      <div class="sk-item star">TypeScript</div>
-      <div class="sk-item">Next.js</div>
-      <div class="sk-item">Redux Toolkit</div>
-      <div class="sk-item">TailwindCSS</div>
-      <div class="sk-item">Vite</div>
-    </div>
-    <div class="sk-col">
-      <div class="sk-title">Cloud & DevOps</div>
-      <div class="sk-item star">AWS (EC2, S3, RDS)</div>
-      <div class="sk-item">AWS Cognito / KMS</div>
-      <div class="sk-item star">Docker Compose</div>
-      <div class="sk-item">Terraform</div>
-      <div class="sk-item">GitHub Actions</div>
-      <div class="sk-item">Jenkins</div>
-    </div>
-    <div class="sk-col">
-      <div class="sk-title">Databases</div>
-      <div class="sk-item star">PostgreSQL</div>
-      <div class="sk-item">MySQL</div>
-      <div class="sk-item">MongoDB</div>
-      <div class="sk-item star">Redis</div>
-      <div class="sk-item">ChromaDB</div>
-      <div class="sk-item">SQL Server</div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section class="section" id="contact">
-  <div class="sec-eyebrow r">05 — Contact</div>
-  <h2 class="contact-heading r">Let's work<br>together.</h2>
-  <div class="contact-grid">
-    <div class="contact-links r">
-      <a href="mailto:naleprerana11@gmail.com" class="cl">
-        <div class="cl-main"><span class="cl-l">Email</span><span class="cl-v">naleprerana11@gmail.com</span></div>
-        <span class="cl-a">↗</span>
-      </a>
-      <a href="https://linkedin.com/in/prerana-nale" target="_blank" class="cl">
-        <div class="cl-main"><span class="cl-l">LinkedIn</span><span class="cl-v">linkedin.com/in/prerana-nale</span></div>
-        <span class="cl-a">↗</span>
-      </a>
-      <a href="https://github.com/preranale" target="_blank" class="cl">
-        <div class="cl-main"><span class="cl-l">GitHub</span><span class="cl-v">github.com/preranale</span></div>
-        <span class="cl-a">↗</span>
-      </a>
-      <a href="Nale_Prerana__Resume.pdf" target="_blank" class="cl">
-        <div class="cl-main"><span class="cl-l">Résumé</span><span class="cl-v">Download PDF</span></div>
-        <span class="cl-a">↓</span>
-      </a>
-      <a href="tel:+16028120690" class="cl">
-        <div class="cl-main"><span class="cl-l">Phone</span><span class="cl-v">(602) 812-0690</span></div>
-        <span class="cl-a">↗</span>
-      </a>
-    </div>
-    <div class="contact-right r r2">
-      <div class="cr-t">Open to — AI Engineer · ML Engineer · Full-Stack · Remote or Phoenix, AZ · from May 2026</div>
-      <div class="cr-items">
-        <div class="cri"><div class="cri-n">4.0</div><div class="cri-text"><strong>Perfect GPA</strong>MS Software Engineering, ASU</div></div>
-        <div class="cri"><div class="cri-n">95</div><div class="cri-text"><strong>Lighthouse score</strong>Top 2% globally — Orange Sulphur</div></div>
-        <div class="cri"><div class="cri-n">60%</div><div class="cri-text"><strong>Release cycle cut</strong>via CI/CD automation at 4 Systems</div></div>
-        <div class="cri"><div class="cri-n">40%</div><div class="cri-text"><strong>Query latency reduced</strong>PostgreSQL & MySQL optimization</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <p>© 2026 Prerana Nale · AI Engineer</p>
-  <p>Phoenix, AZ · Arizona State University · MS Software Engineering</p>
-</footer>
+<footer class="wrap">© 2026 Prerana Nale · Notebook No. 4</footer>
 
 <script>
-const c=document.getElementById('c'),cr=document.getElementById('cr');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;c.style.left=mx+'px';c.style.top=my+'px';});
-(function t(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(t);})();
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{c.classList.add('ov');cr.classList.add('ov');});
-  el.addEventListener('mouseleave',()=>{c.classList.remove('ov');cr.classList.remove('ov');});
-});
-const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.08});
-document.querySelectorAll('.r').forEach(el=>obs.observe(el));
+(function () {
+  var root = document.documentElement;
+  var btn = document.getElementById('theme');
+  function apply(dark) {
+    root.setAttribute('data-theme', dark ? 'dark' : 'light');
+    btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    btn.textContent = dark ? 'Lights on' : 'Lights off';
+  }
+  apply(root.getAttribute('data-theme') === 'dark');
+  btn.addEventListener('click', function () {
+    var dark = root.getAttribute('data-theme') !== 'dark';
+    apply(dark);
+    try { localStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
+  });
+})();
 </script>
 </body>
 </html>
